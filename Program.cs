@@ -1,4 +1,5 @@
 using DynamicPricing.Data;
+using DynamicPricing.Profiles;
 using DynamicPricing.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddScoped<DynamicPricingContext>();
 
 builder.Services.AddSqlite<DynamicPricingContext>("Data Source=DynamicPricing.db");
 
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 

@@ -15,7 +15,7 @@ public class ProductService {
         _dbConnect = dbConnect;
     }
 
-    public IEnumerable<Product> GetAll(){
+    public List<Product> GetAll(){
         return _dbConnect.Product
         .AsNoTracking()
         .ToList();
@@ -30,6 +30,7 @@ public class ProductService {
 
     public IEnumerable? GetAllPricesProduct(int id){
         return 
+        /*
         from rp in _dbConnect.RetailerProducts
         join p in _dbConnect.Product on rp.ProductId equals p.Id
         join r in _dbConnect.Retailer on rp.RetailerId equals r.Id
@@ -39,18 +40,44 @@ public class ProductService {
             RetailerName = r.Name,
             rp.Price,
         };
-
+        */
+        _dbConnect.RetailerProducts
+        .Join(_dbConnect.Product,
+            rp => rp.ProductId,
+            p => p.Id,
+            (rp, p) => new { rp, p })
+        .Join(_dbConnect.Retailer,
+            rpp => rpp.rp.RetailerId,
+            r => r.Id,
+            (rpp, r) => new { rpp.rp, rpp.p, r })
+        .Where(rpp => rpp.p.Id == id)
+        .Select(rpp => new 
+        {
+            RetailerName = rpp.r.Name,
+            rpp.rp.Price
+        });
     }
-    public Double GetMaxPrice(int id)
+    public Double? GetMaxPrice(int id)
     {
-        return _dbConnect.RetailerProducts.
-        Where(rp => rp.ProductId == id).
-        Min(rp => rp.Price);
+        Double maxPriceOfProduct = 0;
+        try
+        {   
+            maxPriceOfProduct = _dbConnect.RetailerProducts.
+                                Where(rp => rp.ProductId == id).
+                                Min(rp => rp.Price);
+        }
+        catch(InvalidOperationException e)
+        {
+            Console.Write(e);
+            return null;
+        }
+        return maxPriceOfProduct;
     }
 
-    public IEnumerable? GetCompetitorsOfGrp(int id)
+    public IEnumerable? GetCompetitorsOfGrp(int productGroupId)
     {
         return 
+        /*
         from p in _dbConnect.Product
         join rp in _dbConnect.RetailerProducts on p.Id equals rp.ProductId
         join r in _dbConnect.Retailer on rp.RetailerId equals r.Id
@@ -59,5 +86,21 @@ public class ProductService {
         {
             RetailerName = r.Name
         };
+        */
+        _dbConnect.Product
+        .Join(_dbConnect.RetailerProducts,
+            p => p.Id,
+            rp => rp.ProductId,
+            (p, rp) => new { p, rp })
+                .Join(_dbConnect.Retailer,
+            pr => pr.rp.RetailerId,
+            r => r.Id,
+            (pr, r) => new { pr.p, pr.rp, r })
+        .Where(prr => prr.p.GroupId == productGroupId)
+        .Select(prr => new 
+        {
+            RetailerName = prr.r.Name
+        });
+
     }
 }
