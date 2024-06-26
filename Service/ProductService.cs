@@ -64,7 +64,7 @@ public class ProductService {
         {   
             maxPriceOfProduct = _dbConnect.RetailerProducts.
                                 Where(rp => rp.ProductId == id).
-                                Min(rp => rp.Price);
+                                Max(rp => rp.Price);
         }
         catch(InvalidOperationException e)
         {
@@ -77,30 +77,14 @@ public class ProductService {
     public IEnumerable? GetCompetitorsOfGrp(int productGroupId)
     {
         return 
-        /*
-        from p in _dbConnect.Product
+        (from p in _dbConnect.Product
         join rp in _dbConnect.RetailerProducts on p.Id equals rp.ProductId
         join r in _dbConnect.Retailer on rp.RetailerId equals r.Id
-        where p.GroupId == id
+        where p.GroupId == productGroupId
         select new 
         {
             RetailerName = r.Name
-        };
-        */
-        _dbConnect.Product
-        .Join(_dbConnect.RetailerProducts,
-            p => p.Id,
-            rp => rp.ProductId,
-            (p, rp) => new { p, rp })
-                .Join(_dbConnect.Retailer,
-            pr => pr.rp.RetailerId,
-            r => r.Id,
-            (pr, r) => new { pr.p, pr.rp, r })
-        .Where(prr => prr.p.GroupId == productGroupId)
-        .Select(prr => new 
-        {
-            RetailerName = prr.r.Name
-        });
+        }).Distinct();
 
     }
 }

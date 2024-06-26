@@ -40,6 +40,12 @@ public class RetailerService
                 retailerProduct.Price = newValue;
                 await _dbconnect.SaveChangesAsync();
             }
+            else
+            {
+                retailerProduct.Price = retailerProduct.MinPrice;
+                await _dbconnect.SaveChangesAsync();
+                return "Minimum CAP value reached.";
+            }
         }
         else
         {
