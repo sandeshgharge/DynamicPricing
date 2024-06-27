@@ -5,6 +5,9 @@ using Microsoft.Net.Http.Headers;
 
 namespace DynamicPricing.Data;
 
+/// <summary>
+/// The database context class for interacting with the database.
+/// </summary>
 public class DynamicPricingContext : DbContext 
 {
     public DynamicPricingContext(DbContextOptions<DynamicPricingContext> options) : base(options)

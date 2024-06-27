@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DynamicPricing.Models;
 
+/// <summary>
+/// Represents a retailer entity.
+/// </summary>
 public class Retailer{
 
     [Key]

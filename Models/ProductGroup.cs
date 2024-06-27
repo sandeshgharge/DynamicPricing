@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DynamicPricing.Models;
 
+/// <summary>
+/// Repersents a Product Group Entity
+/// </summary>
 public class ProductGroup{
 
     [Key]

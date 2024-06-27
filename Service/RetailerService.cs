@@ -14,6 +14,19 @@ public class RetailerService
         _dbconnect = dbConnect;
     }
 
+    /// <summary>
+    /// This Service alters prices of a product as needed.
+    /// Price can be altered in 2 ways, in the form of discount or a specific value.
+    /// A flag in the body object is used to method of deduction
+    /// </summary>
+    /// <param name="alterPrice">
+    /// This is a body object containing -
+    /// Product ID - Whose price has to be altered.
+    /// Retailer ID - Retailer who wants to alter the price of a product.
+    /// isDiscount - Flag which confirms if the value is in the form of discount or direct value.
+    /// Value - The amount that has be to deducted from the current price.</param>
+    /// <returns>String stating the update if the prices as updated.</returns>
+
     public async Task<string?> UpdatePricesRetailerAsync(AlterPriceRetailerDTO alterPrice)
     {
         int retailerId = alterPrice.retailerId;
@@ -54,6 +67,13 @@ public class RetailerService
         return "Price udpated.";
     }
 
+    /// <summary>
+    /// This Service recommend a price for a retailer, considering the valuation of a product by other competitors.
+    /// The price is recommended using Minimum price set by a retailer, current minimum value in the market and current valuation of the product by the retailer.
+    /// </summary>
+    /// <param name="retailerId">Retailer Id who needs the recommedations.</param>
+    /// <param name="productId">Product Id whose recommendation we need.</param>
+    /// <returns>Recommended value.</returns>
     public Double? GetPriceRecommendationForRetailer(int retailerId, int productId)
     {
         Double minPriceOfProduct = 0;

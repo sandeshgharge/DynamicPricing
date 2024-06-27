@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DynamicPricing.Models;
 
+/// <summary>
+/// Represents the relationship between retailers and products.
+/// </summary>
 public class RetailerProducts{
 
     [Key]
