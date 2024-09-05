@@ -19,7 +19,7 @@ A basic Web API project is created using .Net and C# to illustrate the functiona
 ### Remove Migration -
 - dotnet ef migrations remove
 
-### AutoMapper -
+### AutoMapper - Mapping BEAN Objects to DTO Objects
 - dotnet add package AutoMapper => Working and Used
 - dotnet add package AutoMapper.Extension.Microsoft.DependencyInjection => command not working with current version i.e. .Net 8
 --version 7.0.0
@@ -44,3 +44,8 @@ Reference - "https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-
 - dotnet add .\DynamicPricing.Tests\DynamicPricing.Tests.csproj reference .\DynamicPricing.csproj
 - dotnet add package Microsoft.AspNetCore.Mvc.Testing
 - dotnet add package Moq
+
+## Docker commands
+- docker build -t dynamicpricing .
+- docker run -d -p 5432:80 --name dpc dp
+- docker container run dynamicpricing
